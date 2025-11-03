@@ -4,18 +4,20 @@ filename=$1
 
 if [ -z "$filename" ];
     then
-    echo "N Problem with filename"
+    echo ">> Problem with filename"
     exit 1
 fi
 
-nasm -f elf64 "$filename.asm" -o "$filename.o" &&
-ld "$filename.o" -o "$filename" && 
-echo "Build succesfull : ./$filename ,"
+mkdir -p "$(dirname "./builds/$filename")"
+
+nasm -f elf64 "$filename.asm" -o "./builds/$filename.o" &&
+ld "./builds/$filename.o" -o "./builds/$filename" && 
+echo "Build succesful : ./builds/$filename ,"
 
 echo "Run it ??[1,0]"
 read input
 if [ "$input" = "1" ]; then
-    ./"$filename"
+    ./builds/"$filename"
 else
     echo "Aborted"
 fi
